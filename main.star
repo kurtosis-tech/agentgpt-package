@@ -6,6 +6,11 @@ DEFAULT_NEXTAUTH_SECRET = "tcqlc6bKBaTiZ6KocEVoWJ3F5Q2IB9OAYWH/0OvrRck="
 
 AGENTGPT_IMAGE = "agentgpt"
 
+DEFAULT_PORT_TO_EXPOSE = 3000
+HTTP_PORT_ON_CONTAINER = 3000
+# pass PORT_OVERRIDE arg key to expose the server on something else apart from 3000
+PORT_OVERRIDE_ARG_KEY = "PORT_OVERRIDE"
+
 def run(plan, args):
 
     if  OPENAI_API_KEY_ENV_VAR not in args:
@@ -16,22 +21,30 @@ def run(plan, args):
     env_vars = get_default_env(openai_api_key)
     
     for key in args:
-        if key == OPENAI_API_KEY_ENV_VAR:
+        if key == OPENAI_API_KEY_ENV_VAR or key not in env_vars:
             continue
         plan.print("Overriding default value {0} with passed value {1} for {2}".format(env_vars[key], args[key], key))
         env_vars[key] = args[key]
+
+    exposed_port = args.get(PORT_OVERRIDE_ARG_KEY, DEFAULT_PORT_TO_EXPOSE)
     
     plan.add_service(
         name = "agentgpt",
         config = ServiceConfig(
             image = AGENTGPT_IMAGE,
             ports = {
-                "http": PortSpec(number = 3000, transport_protocol = "TCP")
+                "http": PortSpec(number = HTTP_PORT_ON_CONTAINER, transport_protocol = "TCP")
+            },
+            public_ports = {
+                "http": PortSpec(number = exposed_port, transport_protocol = "TCP"),
             },
             env_vars = env_vars
         )
     )
 
+    return {
+        "agentGPT URL": "http://127.0.0.1:{0}".format(exposed_port)
+    }
 
 
 def validate_api_key(api_key):
