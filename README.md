@@ -19,4 +19,13 @@ docker build -t IMAGE_NAME .
 kurtosis run github.com/kurtosis-tech/agentgpt-pacakge {"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "IMAGE": "IMAGE_NAME"}
 ```
 
-Where `IMAGE_NAME` is the desired image name.
+Where `IMAGE_NAME` is the desired image name. The `IMAGE` arg overrides the `IMAGE` with which the container runs.
+
+
+## Port Exposed Note
+
+By default we expose the port `3000`; if you are running into port clashes or want to change it for any other reason use the `PORT_OVERRIDE` arg; as follows
+
+```bash
+kurtosis run github.com/kurtosis-tech/agentgpt-pacakge {"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "PORT_OVERRIDE": 3030}
+```
