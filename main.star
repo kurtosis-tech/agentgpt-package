@@ -4,7 +4,9 @@ OPENAI_API_KEY_ENV_VAR = "OPENAI_API_KEY"
 # OVERRIDE THIS BY PASSING YOUR OWN NEXTAUTH_SECRET INSIDE ARGS
 DEFAULT_NEXTAUTH_SECRET = "tcqlc6bKBaTiZ6KocEVoWJ3F5Q2IB9OAYWH/0OvrRck="
 
-AGENTGPT_IMAGE = "agentgpt"
+DEFAULT_IMAGE = "h4ck3rk3y/agentgpt"
+# Set args to {"IMAGE": "YOUR_IMAGE_HERE"} to pull a different image than h4ck3rk3y/agentgpt
+IMAGE_OVERRIDE_KEY = "IMAGE"
 
 DEFAULT_PORT_TO_EXPOSE = 3000
 HTTP_PORT_ON_CONTAINER = 3000
@@ -30,11 +32,12 @@ def run(plan, args):
         env_vars[key] = args[key]
 
     exposed_port = args.get(PORT_OVERRIDE_ARG_KEY, DEFAULT_PORT_TO_EXPOSE)
+    image = args.get(IMAGE_OVERRIDE_KEY, DEFAULT_IMAGE)
     
     plan.add_service(
         name = "agentgpt",
         config = ServiceConfig(
-            image = AGENTGPT_IMAGE,
+            image = image,
             ports = {
                 "http": PortSpec(number = HTTP_PORT_ON_CONTAINER, transport_protocol = "TCP")
             },
