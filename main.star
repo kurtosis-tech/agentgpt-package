@@ -11,6 +11,9 @@ HTTP_PORT_ON_CONTAINER = 3000
 # pass PORT_OVERRIDE arg key to expose the server on something else apart from 3000
 PORT_OVERRIDE_ARG_KEY = "PORT_OVERRIDE"
 
+# We don't validate this; we just let it go
+TEST_API_KEY = "test"
+
 def run(plan, args):
 
     if  OPENAI_API_KEY_ENV_VAR not in args:
@@ -48,6 +51,9 @@ def run(plan, args):
 
 
 def validate_api_key(api_key):
+    if api_key == TEST_API_KEY:
+        return
+
     if len(api_key) != 51:
         fail("Invalid API Key; api keys must be 51 characters long and begin with sk-")
     
