@@ -4,25 +4,32 @@ OPENAI_API_KEY_ENV_VAR = "OPENAI_API_KEY"
 # OVERRIDE THIS BY PASSING YOUR OWN NEXTAUTH_SECRET INSIDE ARGS
 DEFAULT_NEXTAUTH_SECRET = "tcqlc6bKBaTiZ6KocEVoWJ3F5Q2IB9OAYWH/0OvrRck="
 
+AGENTGPT_IMAGE = "agentgpt"
+
 def run(plan, args):
 
     if  OPENAI_API_KEY_ENV_VAR not in args:
-        fail("{0} is necessary to be passed".format(OPENAI_API_KEY))
+        fail("{0} is necessary to be passed".format(OPENAI_API_KEY_ENV_VAR))
 
-    openai_api_key = args[OPENAI_API_KEY]
+    openai_api_key = args[OPENAI_API_KEY_ENV_VAR]
 
-    env_vars = get_default_env()
+    env_vars = get_default_env(openai_api_key)
     
-    for key in env_vars:
-        if key in args:
-            env_vars[key] = args[key]
+    for key in args:
+        if key == OPENAI_API_KEY_ENV_VAR:
+            continue
+        plan.print("Overriding default value {0} with passed value {1} for {2}".format(env_vars[key], args[key], key))
+        env_vars[key] = args[key]
     
     plan.add_service(
         name = "agentgpt",
-        ports = {
-            "http": PortSpec(number = 3000, transport_protocol = "TCP")
-        },
-        env_vars = env_vars
+        config = ServiceConfig(
+            image = AGENTGPT_IMAGE,
+            ports = {
+                "http": PortSpec(number = 3000, transport_protocol = "TCP")
+            },
+            env_vars = env_vars
+        )
     )
 
 
