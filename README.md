@@ -5,7 +5,7 @@
 Assuming you have Kurtosis [installed](https://docs.kurtosis.com/install/); replace YOUR_API_KEY_HERE with the actual API key
 
 ```bash
-kurtosis run github.com/kurtosis-tech/agentgpt-pacakge {"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}
+kurtosis run github.com/kurtosis-tech/agentgpt-pacakge '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
 ```
 
 Then just visit it on your browser at `http://localhost:3000`
@@ -16,7 +16,7 @@ Currently this project is working with a self published image at `h4ck3rk3y/agen
 
 ```bash
 docker build -t IMAGE_NAME .
-kurtosis run github.com/kurtosis-tech/agentgpt-pacakge {"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "IMAGE": "IMAGE_NAME"}
+kurtosis run github.com/kurtosis-tech/agentgpt-pacakge '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "IMAGE": "IMAGE_NAME"}'
 ```
 
 Where `IMAGE_NAME` is the desired image name. The `IMAGE` arg overrides the `IMAGE` with which the container runs.
@@ -27,5 +27,5 @@ Where `IMAGE_NAME` is the desired image name. The `IMAGE` arg overrides the `IMA
 By default we expose the port `3000`; if you are running into port clashes or want to change it for any other reason use the `PORT_OVERRIDE` arg; as follows
 
 ```bash
-kurtosis run github.com/kurtosis-tech/agentgpt-pacakge {"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "PORT_OVERRIDE": 3030}
+kurtosis run github.com/kurtosis-tech/agentgpt-pacakge '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "PORT_OVERRIDE": 3030}'
 ```
