@@ -12,10 +12,10 @@ Then just visit it on your browser at `http://localhost:3000`
 
 ## Docker Image Note
 
-Currently this project is working with a self published image at `h4ck3rk3y/agentgpt`. If you have the `agentGPT` repo cloned locally, do the following instead from inside the `agentGPT` repository:
+Currently this project is working with a self published image at `h4ck3rk3y/agentgpt`. If you have the [`agentGPT`](https://github.com/reworkd/AgentGPT) repo cloned locally, do the following instead from inside the `agentGPT` repository:
 
 ```bash
-docker build -t IMAGE_NAME .
+./setup.sh --docker
 kurtosis run github.com/kurtosis-tech/agentgpt-package '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "IMAGE": "IMAGE_NAME"}'
 ```
 
